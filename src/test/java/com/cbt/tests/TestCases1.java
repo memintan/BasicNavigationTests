@@ -16,26 +16,39 @@ public class TestCases1 {
 
     @BeforeMethod
     public void setup(){
-        driver = BrowserFactory.getDriver("chrome");
-        driver.get("https://practice-cybertekschool.herokuapp.com");
-        driver.manage().window().maximize();
+            driver = BrowserFactory.getDriver("chrome");
+            driver.get("https://practice-cybertekschool.herokuapp.com");
+            driver.manage().window().maximize();
     }
+    /*
+      Step 1. Go to https://practice- cybertekschool.herokuapp.com
+      Step 2. Click on “Sign Up For Mailing List”
+      Step 3. Enter any valid name
+      Step 4. Enter any valid email
+      Step 5. Click on “Sign Up” button
+      Expected result: Following message should be displayed: “Thank you for signing up.
+      Click the button below to return to the home page.” Home button should be displayed.
+     */
 
     @Test(description = "Verify the message and home button")
-    public void testCase1 () throws InterruptedException {
+    public void test1 () throws InterruptedException {
+        // finding the element be the text
+        // everything between > < is a text
         driver.findElement(By.xpath("//a[text()='Sign Up For Mailing List']")).click();
 
-        WebElement name = driver.findElement(By.xpath("//input[@type='text']"));
-        WebElement email = driver.findElement(By.cssSelector("[type='email']"));
+        WebElement name = driver.findElement(By.cssSelector("[type='text'][name='full_name']"));
         name.sendKeys("Kateryna");
+        WebElement email = driver.findElement(By.name("email"));
         email.sendKeys("KSemenenko@gmail.com");
         Thread.sleep(1000);
         driver.findElement(By.cssSelector("[class='radius'][name='wooden_spoon']")).click();
 
+        // Verifying the massage
         String expected = "Thank you for signing up. Click the button below to return to the home page.";
-        String actual = driver.findElement(By.xpath("//h3[@class='subheader']")).getText();//h3[@class='subheader']
+        String actual = driver.findElement(By.xpath("//h3[@class='subheader']")).getText();
         Assert.assertEquals(expected,actual,"FAIL");
 
+        // Verifying that home button is displayed
         WebElement homeButton = driver.findElement(By.id("wooden_spoon"));
         Assert.assertTrue(homeButton.isDisplayed(),"Home button is not displayed");
 
@@ -43,8 +56,14 @@ public class TestCases1 {
 
     }
 
+    /*
+        Step 1. Go to https://practice-cybertekschool.herokuapp.com
+        Step 2. Verify that number of listed examples is equals to 48.
+        Hint: use findElements() and size() methods.
+     */
+
     @Test (description = " Verify that number of listed examples is equals to 48 ")
-    public void testCase2() {
+    public void test2() {
         List<WebElement> list = driver.findElements(By.xpath("//*[@class='list-group-item']"));
         int expected = 48;
         Assert.assertEquals(list.size(),expected,"Number of listed examples is not equal to 48");
@@ -52,7 +71,7 @@ public class TestCases1 {
     }
 
     @Test (description = " Verify that result message is displayed: “Clicked on button one!” ")
-    public void testCase3() {
+    public void test3() {
          driver.findElement(By.linkText("Multiple Buttons")).click();
          driver.findElement(By.cssSelector("[onclick='button1()']")).click();
          String expected = "Clicked on button one!";
@@ -105,10 +124,6 @@ public class TestCases1 {
         WebElement message = driver.findElement(By.xpath("//*[contains(text(),'Phone format is not correct')] [@class='help-block']"));
         Assert.assertTrue(message.isDisplayed(), "Message is NOT displayed");
     }
-
-
-
-
 
 
     @AfterMethod
