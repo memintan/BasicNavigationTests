@@ -75,6 +75,7 @@ public class NavigationTests {
     public static void edgeTest() throws InterruptedException{
         // open the browser
         WebDriver driver = BrowserFactory.getDriver("edge");
+
         // Full screen
         driver.manage().window().fullscreen();
         // Go to website
